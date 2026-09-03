@@ -18,9 +18,7 @@ import 'pg'; // Force Vercel to include the pg package in the serverless bundle
         password: configService.get('DATABASE_PASSWORD', { infer: true }),
         database: configService.get('DATABASE_NAME', { infer: true }),
         autoLoadEntities: true,
-        synchronize:
-          configService.get('NODE_ENV', { infer: true }) ===
-          Environment.Development,
+        synchronize: true, // Temporarily forced to true for deployment
         ssl:
           configService.get('NODE_ENV', { infer: true }) ===
           Environment.Production
