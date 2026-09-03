@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Environment, EnvironmentVariables } from '../config/env.validation';
+import 'pg'; // Force Vercel to include the pg package in the serverless bundle
 
 @Module({
   imports: [
