@@ -1,7 +1,7 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
-import { EnvironmentVariables } from '../config/env.validation';
+import { Environment, EnvironmentVariables } from '../config/env.validation';
 
 /** Keys per `SCAN` round-trip; a hint, not a limit. */
 const SCAN_BATCH_SIZE = 100;
@@ -18,6 +18,12 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
     this.client = new Redis({
       host: this.configService.get('REDIS_HOST', { infer: true }),
       port: this.configService.get('REDIS_PORT', { infer: true }),
+      password: this.configService.get('REDIS_PASSWORD', { infer: true }),
+      tls:
+        this.configService.get('NODE_ENV', { infer: true }) ===
+        Environment.Production
+          ? {}
+          : undefined,
     });
   }
 

@@ -20,6 +20,11 @@ import { Environment, EnvironmentVariables } from '../config/env.validation';
         synchronize:
           configService.get('NODE_ENV', { infer: true }) ===
           Environment.Development,
+        ssl:
+          configService.get('NODE_ENV', { infer: true }) ===
+          Environment.Production
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
   ],

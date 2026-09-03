@@ -2,6 +2,7 @@ import { plainToInstance } from 'class-transformer';
 import {
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
   IsUrl,
   validateSync,
@@ -40,6 +41,10 @@ export class EnvironmentVariables {
 
   @IsNumber()
   REDIS_PORT!: number;
+
+  @IsString()
+  @IsOptional()
+  REDIS_PASSWORD?: string;
 
   @IsString()
   JWT_ACCESS_SECRET!: string;
