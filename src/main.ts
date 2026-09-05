@@ -8,13 +8,7 @@ import { EnvironmentVariables } from './config/env.validation';
 
 const CORS_MAX_AGE_SECONDS = 86400;
 
-/** Splits the comma-separated `CORS_ORIGINS` env var into a clean origin list. */
-function parseCorsOrigins(rawOrigins: string): string[] {
-  return rawOrigins
-    .split(',')
-    .map((origin) => origin.trim().replace(/\/$/, ''))
-    .filter((origin) => origin.length > 0);
-}
+
 
 const expressApp = express();
 let cachedApp: any;
@@ -29,9 +23,14 @@ async function bootstrap() {
       app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
 
     app.enableCors({
-      origin: parseCorsOrigins(
-        configService.get('CORS_ORIGINS', { infer: true }),
-      ),
+      origin: [
+        'http://localhost:4200',
+        'http://localhost:4300',
+        'http://localhost:4400',
+        'https://invento-user-site.vercel.app',
+        'https://invento-site-builder.vercel.app',
+        'https://invento-owner-dashboard.vercel.app',
+      ],
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
