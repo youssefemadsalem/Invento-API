@@ -11,6 +11,20 @@ const CORS_MAX_AGE_SECONDS = 86400;
 
 
 const expressApp = express();
+expressApp.use((req, res, next) => {
+  const origin = req.headers.origin || req.headers.Origin;
+  if (origin) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  next();
+});
+
 let cachedApp: any;
 
 async function bootstrap() {
@@ -22,13 +36,7 @@ async function bootstrap() {
     const configService =
       app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
 
-    app.enableCors({
-      origin: true,
-      methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      credentials: true,
-      maxAge: CORS_MAX_AGE_SECONDS,
-    });
+    // app.enableCors disabled in favor of manual middleware
 
     app.useGlobalPipes(
       new ValidationPipe({
