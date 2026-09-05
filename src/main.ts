@@ -23,14 +23,7 @@ async function bootstrap() {
       app.get<ConfigService<EnvironmentVariables, true>>(ConfigService);
 
     app.enableCors({
-      origin: [
-        'http://localhost:4200',
-        'http://localhost:4300',
-        'http://localhost:4400',
-        'https://invento-user-site.vercel.app',
-        'https://invento-site-builder.vercel.app',
-        'https://invento-owner-dashboard.vercel.app',
-      ],
+      origin: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
